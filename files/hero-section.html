@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outschool - Upgrade Your Skills</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gradient-start: #5000ff;
+            --gradient-end: #e400ff;
+            --button-primary: #ff0077;
+            --button-hover: #e60066;
+            --white: #fff;
+            --font-base: 'Montserrat', sans-serif;
+            --h1-size: clamp(2.5rem, 5vw, 4rem);
+            --body-size: clamp(1rem, 1.1vw, 1.1rem);
+            --space-sm: 1rem;
+            --space-md: 2rem;
+            --space-lg: 4rem;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-base);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            min-height: 100vh;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25vh;
+            background: var(--white);
+            clip-path: polygon(0 40%, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .navbar {
+            padding: var(--space-md) 0;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            background: rgba(80, 0, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            color: var(--white);
+            opacity: 0.9;
+            transform: scale(1.05);
+        }
+
+        .hero-nav-links {
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            font-size: clamp(0.85rem, 1vw, 0.95rem);
+            padding: 0.5rem 1rem;
+            position: relative;
+            border-radius: 25px;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+        }
+
+        .burger-menu {
+            display: none;
+            cursor: pointer;
+            z-index: 100;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .burger-menu span {
+            display: block;
+            width: 30px;
+            height: 2px;
+            background: var(--white);
+            margin: 6px 0;
+            transition: var(--transition-slow);
+            border-radius: 4px;
+        }
+
+        .mobile-nav {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 450px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            padding: 80px 20px;
+            z-index: 99;
+            transition: right var(--transition-slow);
+            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .mobile-nav.active {
+            right: 0;
+        }
+
+        .mobile-nav .nav-link {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            transform: translateX(50px);
+            opacity: 0;
+            transition: all var(--transition-slow);
+        }
+
+        .mobile-nav.active .nav-link {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .mobile-nav .nav-link i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .mobile-nav .nav-link:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-nav .nav-link:nth-child(2) { transition-delay: 0.2s; }
+        .mobile-nav .nav-link:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-nav .nav-link:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-nav .nav-link:nth-child(5) { transition-delay: 0.5s; }
+        .mobile-nav .nav-link:nth-child(6) { transition-delay: 0.6s; }
+
+        .mobile-nav-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mobile-nav-header .logo img {
+            height: 35px;
+            transition: var(--transition);
+        }
+
+        .close-menu {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            position: relative;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-menu::before,
+        .close-menu::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: var(--white);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .close-menu::before {
+            transform: rotate(45deg);
+        }
+
+        .close-menu::after {
+            transform: rotate(-45deg);
+        }
+
+        .close-menu:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(180deg);
+        }
+
+        .hero-content {
+            padding: var(--space-lg) 0;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: var(--h1-size);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.5px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-title span {
+            text-transform: uppercase;
+            display: inline-block;
+            background: linear-gradient(90deg, #fff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            margin-bottom: var(--space-md);
+            opacity: 0.9;
+            max-width: 600px;
+            font-weight: 400;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 160px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--button-primary);
+            color: var(--white);
+            border: none;
+            box-shadow: 0 5px 15px rgba(255, 0, 119, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 119, 0.4);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--white);
+            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--gradient-start);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-image {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.2));
+            animation: float 6s ease-in-out infinite;
+            transition: var(--transition);
+        }
+
+        .hero-image:hover {
+            filter: drop-shadow(0 25px 35px rgba(0,0,0,0.25));
+            transform: scale(1.02);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .hero-nav-links {
+                gap: var(--space-sm);
+            }
+            
+            .nav-link {
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .burger-menu {
+                display: block;
+            }
+
+            .hero-content {
+                padding: var(--space-md) 0;
+                text-align: center;
+            }
+
+            .hero-text {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .btn-wrapper {
+                justify-content: center;
+            }
+
+            .hero-image {
+                margin-top: var(--space-md);
+                max-width: 80%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --space-lg: 2rem;
+            }
+            
+            .navbar {
+                padding: var(--space-sm) 0;
+            }
+
+            .hero-nav-links {
+                display: none !important;
+            }
+
+            .burger-menu.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .burger-menu.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .burger-menu.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(7px, -7px);
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-text {
+                font-size: 1rem;
+            }
+
+            .btn {
+                min-width: 140px;
+                padding: 0.8rem 1.8rem;
+            }
+
+            .mobile-nav {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .mobileLogoImg {
+                width: 240px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+        <nav class="navbar">
+            <div class="container">
+                <div class="w-100 d-flex justify-content-between align-items-center">
+                    <a href="#" class="logo"><img src="/images/logo.png" alt="Outschool Logo"></a>
+                    <div class="d-none d-lg-flex hero-nav-links align-items-center">
+                        <a href="#" class="nav-link"><i class="fas fa-graduation-cap me-2"></i>Course</a>
+                        <a href="#" class="nav-link"><i class="fas fa-tag me-2"></i>Pricing</a>
+                        <a href="#" class="nav-link"><i class="fas fa-info-circle me-2"></i>About Us</a>
+                        <a href="#" class="nav-link"><i class="fas fa-envelope me-2"></i>Contact Us</a>
+                    </div>
+                    <div class="w-fitcontent d-flex align-items-center gap-3">
+                        <a href="#" class="nav-link ms-3 d-none d-lg-block"><i class="fas fa-user me-2"></i>Account</a>
+                        <a href="#" class="nav-link d-none d-lg-block"><i class="fas fa-shopping-cart me-2"></i>Cart</a>
+                        <div class="burger-menu d-lg-none">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="mobile-nav">
+            <div class="mobile-nav-header w-100 d-flex justify-content-between align-items-center">
+                <a href="#" class="logo"><img src="/images/logo.png" alt="Outschool Logo" class="mobileLogoImg"></a>
+                <div class="close-menu"></div>
+            </div>
+            <a href="#" class="nav-link gap-3"><i class="fas fa-graduation-cap"></i>Course</a>
+            <a href="#" class="nav-link gap-3"><i class="fas fa-tag"></i>Pricing</a>
+            <a href="#" class="nav-link gap-3"><i class="fas fa-info-circle"></i>About Us</a>
+            <a href="#" class="nav-link gap-3"><i class="fas fa-envelope"></i>Contact Us</a>
+            <a href="#" class="nav-link gap-3"><i class="fas fa-user"></i>Account</a>
+            <a href="#" class="nav-link gap-3"><i class="fas fa-shopping-cart"></i>Cart</a>
+        </div>
+
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title">Upgrade <span>YOUR</span> skills<br>for better Future</h1>
+                    <p class="hero-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+                    <div class="d-flex gap-3 btn-wrapper">
+                        <a href="#" class="btn btn-primary">Check Course</a>
+                        <a href="#" class="btn btn-outline">Learn More</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="/images/hero.png" alt="Student Learning" class="hero-image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" defer></script>
+    <script>
+        const burgerMenu = document.querySelector('.burger-menu');
+        const mobileNav = document.querySelector('.mobile-nav');
+        const closeMenu = document.querySelector('.close-menu');
+        
+        burgerMenu.addEventListener('click', () => {
+            burgerMenu.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeMenu.addEventListener('click', () => {
+            burgerMenu.classList.remove('active');
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (mobileNav.classList.contains('active') && 
+                !mobileNav.contains(e.target) && 
+                !burgerMenu.contains(e.target)) {
+                burgerMenu.classList.remove('active');
+                mobileNav.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
